@@ -174,6 +174,12 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: clean.cleanUrl })
       });
+
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("Local Vite preview is showing a demo transcript. Deploy on Vercel to run the transcript API.");
+      }
+
       const payload = await response.json();
 
       if (!response.ok) throw new Error(payload.error);
