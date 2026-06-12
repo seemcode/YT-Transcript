@@ -13,7 +13,7 @@ import {
   Play,
   Sparkles,
   User,
-  X
+  X,
 } from "lucide-react";
 import "./styles.css";
 
@@ -24,7 +24,7 @@ const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabase
 const buildStamp = new Intl.DateTimeFormat("en", {
   dateStyle: "medium",
   timeStyle: "short",
-  timeZone: "UTC"
+  timeZone: "UTC",
 }).format(new Date());
 
 function normalizeYoutubeUrl(value) {
@@ -64,7 +64,7 @@ function demoTranscript(cleanUrl) {
   return [
     { offset: 0, text: `TranscriptFlow cleaned this video URL: ${cleanUrl}` },
     { offset: 8, text: "Connect Supabase to save transcripts across devices." },
-    { offset: 16, text: "Deploy on Vercel to use the serverless transcript endpoint." }
+    { offset: 16, text: "Deploy on Vercel to use the serverless transcript endpoint." },
   ];
 }
 
@@ -83,7 +83,7 @@ function App() {
 
   const transcriptText = useMemo(
     () => transcript.map((line) => `[${formatTimestamp(line.offset)}] ${line.text}`).join("\n"),
-    [transcript]
+    [transcript],
   );
 
   useEffect(() => {
@@ -117,8 +117,8 @@ function App() {
             title: item.video_id,
             cleanUrl: item.clean_url,
             createdAt: item.created_at,
-            lines: item.lines || []
-          }))
+            lines: item.lines || [],
+          })),
         );
       });
   }, [user]);
@@ -163,7 +163,9 @@ function App() {
 
     if (!user && freeUsed) {
       setShowAuth(true);
-      setStatus("Your first generation is free, but you need to log in or create an account first.");
+      setStatus(
+        "Your first generation is free, but you need to log in or create an account first.",
+      );
       return;
     }
 
@@ -172,12 +174,14 @@ function App() {
       const response = await fetch("/api/transcript", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: clean.cleanUrl })
+        body: JSON.stringify({ url: clean.cleanUrl }),
       });
 
       const contentType = response.headers.get("content-type") || "";
       if (!contentType.includes("application/json")) {
-        throw new Error("Local Vite preview is showing a demo transcript. Deploy on Vercel to run the transcript API.");
+        throw new Error(
+          "Local Vite preview is showing a demo transcript. Deploy on Vercel to run the transcript API.",
+        );
       }
 
       const payload = await response.json();
@@ -190,7 +194,10 @@ function App() {
       const fallback = demoTranscript(clean.cleanUrl);
       setTranscript(fallback);
       await saveHistory(clean, fallback);
-      setStatus(requestError.message || "Demo transcript shown. The live endpoint will run after deployment.");
+      setStatus(
+        requestError.message ||
+          "Demo transcript shown. The live endpoint will run after deployment.",
+      );
     } finally {
       setFreeUsed(true);
       setLoading(false);
@@ -203,7 +210,7 @@ function App() {
       title: clean.videoId,
       cleanUrl: clean.cleanUrl,
       createdAt: new Date().toISOString(),
-      lines
+      lines,
     };
     setHistory((items) => [item, ...items].slice(0, 8));
 
@@ -212,7 +219,7 @@ function App() {
         user_id: user.id,
         video_id: clean.videoId,
         clean_url: clean.cleanUrl,
-        lines
+        lines,
       });
     }
   }
@@ -236,7 +243,9 @@ function App() {
 
       <header className="nav">
         <a href="#top" className="brand" aria-label="TranscriptFlow home">
-          <span className="brandMark"><FileText size={20} /></span>
+          <span className="brandMark">
+            <FileText size={20} />
+          </span>
           TranscriptFlow
         </a>
         <nav>
@@ -246,13 +255,15 @@ function App() {
         </nav>
         <button className="ghostButton" onClick={() => setShowAuth(true)}>
           <LogIn size={18} />
-          {user ? "Account" : "Login"}
+          {user ? "Account" : "Come In"}
         </button>
       </header>
 
       <section className="hero" id="generator">
         <div className="heroCopy">
-          <span className="eyebrow"><Sparkles size={16} /> AI powered YouTube transcripts</span>
+          <span className="eyebrow">
+            <Sparkles size={16} /> AI powered YouTube transcripts
+          </span>
           <h1>Paste any YouTube link. Get a clean transcript in seconds.</h1>
           <p>
             Supabase-backed history, plain text or timestamps, and a desktop app option built for
@@ -296,7 +307,10 @@ function App() {
             ) : (
               <>
                 <h2>Your transcript will land here.</h2>
-                <p>Login once, paste a link, and your generated text stays copy-ready with history saved.</p>
+                <p>
+                  Login once, paste a link, and your generated text stays copy-ready with history
+                  saved.
+                </p>
               </>
             )}
           </article>
@@ -331,9 +345,21 @@ function App() {
             <b>{user ? "Active" : "Guest"}</b>
           </div>
           <div className="stats">
-            <div><Clock3 size={18} /><span>Credits today</span><strong>{user ? "Unlimited" : freeUsed ? "0" : "1"}</strong></div>
-            <div><CreditCard size={18} /><span>Billing</span><strong>Locked</strong></div>
-            <div><BadgeCheck size={18} /><span>Offer</span><strong>Ready</strong></div>
+            <div>
+              <Clock3 size={18} />
+              <span>Credits today</span>
+              <strong>{user ? "Unlimited" : freeUsed ? "0" : "1"}</strong>
+            </div>
+            <div>
+              <CreditCard size={18} />
+              <span>Billing</span>
+              <strong>Locked</strong>
+            </div>
+            <div>
+              <BadgeCheck size={18} />
+              <span>Offer</span>
+              <strong>Ready</strong>
+            </div>
           </div>
           <p className="stripeNote">
             Stripe is intentionally stubbed here: the UI and database are ready for billing fields,
@@ -345,7 +371,12 @@ function App() {
       {showAuth && (
         <div className="modalBackdrop" role="dialog" aria-modal="true">
           <form className="authModal" onSubmit={handleAuth}>
-            <button className="closeButton" type="button" onClick={() => setShowAuth(false)} aria-label="Close">
+            <button
+              className="closeButton"
+              type="button"
+              onClick={() => setShowAuth(false)}
+              aria-label="Close"
+            >
               <X size={20} />
             </button>
             <LockKeyhole size={28} />
@@ -367,9 +398,7 @@ function App() {
         </div>
       )}
 
-      <footer aria-label="App version">
-        TranscriptFlow v0.1.1 · Build {buildStamp}
-      </footer>
+      <footer aria-label="App version">TranscriptFlow v0.1.1 · Build {buildStamp}</footer>
     </main>
   );
 }
