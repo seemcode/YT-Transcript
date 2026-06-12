@@ -254,6 +254,7 @@ function App() {
           <a href="#account">Account</a>
         </nav>
         <button className="ghostButton" onClick={() => setShowAuth(true)}>
+          <span>get inside</span>
           <LogIn size={18} />
         </button>
       </header>
