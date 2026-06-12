@@ -255,7 +255,6 @@ function App() {
         </nav>
         <button className="ghostButton" onClick={() => setShowAuth(true)}>
           <LogIn size={18} />
-          {user ? "Account" : "Come In"}
         </button>
       </header>
 
@@ -307,10 +306,7 @@ function App() {
             ) : (
               <>
                 <h2>Your transcript will land here.</h2>
-                <p>
-                  Login once, paste a link, and your generated text stays copy-ready with history
-                  saved.
-                </p>
+                <p>Sign in once, paste a link, and your generated text stays copy-ready with history saved.</p>
               </>
             )}
           </article>
@@ -380,19 +376,19 @@ function App() {
               <X size={20} />
             </button>
             <LockKeyhole size={28} />
-            <h2>{authMode === "login" ? "Login to continue" : "Create your account"}</h2>
+            <h2>{authMode === "login" ? "Sign in to continue" : "Create your account"}</h2>
             <p>{status || "Save transcripts, sync history, and unlock daily credits."}</p>
             <input name="email" type="email" placeholder="Email address" required />
             <input name="password" type="password" placeholder="Password" required minLength={6} />
             <button className="primaryButton" type="submit">
-              {authMode === "login" ? "Login" : "Create account"}
+              {authMode === "login" ? "Sign in" : "Create account"}
             </button>
             <button
               className="linkButton"
               type="button"
               onClick={() => setAuthMode(authMode === "login" ? "signup" : "login")}
             >
-              {authMode === "login" ? "New here? Create account" : "Already have an account? Login"}
+              {authMode === "login" ? "New here? Create account" : "Already have an account? Sign in"}
             </button>
           </form>
         </div>
